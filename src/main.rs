@@ -1,5 +1,6 @@
 pub mod problem_01;
 pub mod problem_02;
+pub mod problem_03;
 
 use std::io;
 
@@ -15,6 +16,12 @@ fn main() -> io::Result<()> {
 
     let p22 = problem_02::part2()?;
     println!("p22: {}", p22);
+
+    let p31 = problem_03::part1()?;
+    println!("p31: {}", p31);
+
+    let p32 = problem_03::part2()?;
+    println!("p32: {}", p32);
 
     Ok(())
 }
