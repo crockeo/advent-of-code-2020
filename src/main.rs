@@ -25,5 +25,11 @@ fn main() -> io::Result<()> {
     let p32 = problem_03::part2()?;
     println!("p32: {}", p32);
 
+    let p41 = problem_04::part1()?;
+    println!("p41: {}", p41);
+
+    let p42 = problem_04::part2()?;
+    println!("p42: {}", p42);
+
     Ok(())
 }

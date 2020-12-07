@@ -16,12 +16,10 @@ pub fn part2() -> io::Result<u64> {
 
     let slopes = vec![(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)];
 
-    Ok(
-        slopes
-            .iter()
-            .map(|(dx, dy)| tree_map.hits(*dx, *dy))
-            .product()
-    )
+    Ok(slopes
+        .iter()
+        .map(|(dx, dy)| tree_map.hits(*dx, *dy))
+        .product())
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -57,20 +55,18 @@ impl TreeMap {
                 width = line.len()
             } else if width != line.len() {
                 // the map is non-uniform so we just abort here
-                return None
+                return None;
             }
             height += 1;
 
             tiles.extend(line.chars().flat_map(TreeTile::from_char));
         }
 
-        Some(
-            TreeMap {
-                width: width,
-                height: height,
-                tiles: tiles,
-            }
-        )
+        Some(TreeMap {
+            width: width,
+            height: height,
+            tiles: tiles,
+        })
     }
 
     fn new(file: &mut File) -> io::Result<TreeMap> {
@@ -78,14 +74,17 @@ impl TreeMap {
         file.read_to_string(&mut s)?;
 
         match TreeMap::from_str(s.as_str()) {
-            None => Err(io::Error::new(io::ErrorKind::InvalidData, "failed to parse input")),
+            None => Err(io::Error::new(
+                io::ErrorKind::InvalidData,
+                "failed to parse input",
+            )),
             Some(tree_map) => Ok(tree_map),
         }
     }
 
     fn at(&self, x: usize, y: usize) -> Option<TreeTile> {
         if y >= self.height {
-            return None
+            return None;
         }
 
         let x = x % self.width;

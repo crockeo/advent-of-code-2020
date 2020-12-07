@@ -42,8 +42,8 @@ mod test {
     fn test_find_seat_failure() {
         let locators = vec![
             "fake locator", // poorly structured
-            "FBBFRLR", // incomplete rows
-            "FBFBBFFRL" // incomplete columns
+            "FBBFRLR",      // incomplete rows
+            "FBFBBFFRL",    // incomplete columns
         ];
         for locator in locators.into_iter() {
             assert_eq!(find_seat(128, 8, locator), None);

@@ -1,29 +1,25 @@
 use std::fmt;
 use std::fs::File;
 use std::io;
-use std::io::BufReader;
 use std::io::prelude::*;
+use std::io::BufReader;
 use std::path::Path;
 
 use lazy_static::lazy_static;
 use regex::Regex;
 
 pub fn part1() -> io::Result<u32> {
-    Ok(
-        load_passwords()?
-            .iter()
-            .filter(|password| password.is_valid_sled())
-            .count() as u32
-    )
+    Ok(load_passwords()?
+        .iter()
+        .filter(|password| password.is_valid_sled())
+        .count() as u32)
 }
 
 pub fn part2() -> io::Result<u32> {
-    Ok(
-        load_passwords()?
-            .iter()
-            .filter(|password| password.is_valid_toboggan())
-            .count() as u32
-    )
+    Ok(load_passwords()?
+        .iter()
+        .filter(|password| password.is_valid_toboggan())
+        .count() as u32)
 }
 
 #[derive(Debug)]
@@ -37,20 +33,17 @@ struct Password {
 impl Password {
     fn parse(input: &str) -> Option<Password> {
         lazy_static! {
-            static ref PASSWORD_RE: Regex = Regex::new(
-                r"(?P<min>\d+)-(?P<max>\d+) (?P<c>\w): (?P<s>\w+)"
-            ).unwrap();
+            static ref PASSWORD_RE: Regex =
+                Regex::new(r"(?P<min>\d+)-(?P<max>\d+) (?P<c>\w): (?P<s>\w+)").unwrap();
         }
 
         PASSWORD_RE.captures(input).and_then(|captures| {
-            Some(
-                Password {
-                    min: captures.name("min")?.as_str().parse::<u32>().unwrap(),
-                    max: captures.name("max")?.as_str().parse::<u32>().unwrap(),
-                    c: captures.name("c")?.as_str().chars().next()?,
-                    s: captures.name("s")?.as_str().to_string(),
-                }
-            )
+            Some(Password {
+                min: captures.name("min")?.as_str().parse::<u32>().unwrap(),
+                max: captures.name("max")?.as_str().parse::<u32>().unwrap(),
+                c: captures.name("c")?.as_str().chars().next()?,
+                s: captures.name("s")?.as_str().to_string(),
+            })
         })
     }
 
@@ -73,15 +66,17 @@ impl Password {
         let c1 = chars[self.min as usize - 1];
         let c2 = chars[self.max as usize - 1];
 
-
-
         (self.c == c1 || self.c == c2) && !(self.c == c1 && self.c == c2)
     }
 }
 
 impl fmt::Display for Password {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "Password {{ {}-{} {}: {} }}", self.min, self.max, self.c, self.s)
+        write!(
+            f,
+            "Password {{ {}-{} {}: {} }}",
+            self.min, self.max, self.c, self.s
+        )
     }
 }
 
@@ -95,7 +90,7 @@ fn load_passwords() -> io::Result<Vec<Password>> {
             None => {
                 println!("failed to parse line: {}", real_line);
                 continue;
-            },
+            }
             Some(password) => passwords.push(password),
         }
     }
