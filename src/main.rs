@@ -7,6 +7,7 @@ pub mod problem_03;
 pub mod problem_04;
 pub mod problem_05;
 pub mod problem_06;
+pub mod problem_07;
 pub mod solution;
 
 use solution::ProblemSolution;
@@ -34,6 +35,7 @@ fn exec_problem(s: &str) -> io::Result<()> {
     map.insert("p4", &problem_04::Solution {});
     map.insert("p5", &problem_05::Solution {});
     map.insert("p6", &problem_06::Solution {});
+    map.insert("p7", &problem_07::Solution {});
 
     if s == "all" {
         for (_, solution) in map.into_iter() {
