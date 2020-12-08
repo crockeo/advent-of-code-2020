@@ -8,18 +8,28 @@ use std::path::Path;
 use lazy_static::lazy_static;
 use regex::Regex;
 
-pub fn part1() -> io::Result<u32> {
-    Ok(load_passwords()?
-        .iter()
-        .filter(|password| password.is_valid_sled())
-        .count() as u32)
-}
+use crate::solution::ProblemSolution;
 
-pub fn part2() -> io::Result<u32> {
-    Ok(load_passwords()?
-        .iter()
-        .filter(|password| password.is_valid_toboggan())
-        .count() as u32)
+pub struct Solution {}
+
+impl ProblemSolution for Solution {
+    fn name(&self) -> &'static str {
+        "problem_02"
+    }
+
+    fn part1(&self) -> io::Result<i64> {
+        Ok(load_passwords()?
+            .iter()
+            .filter(|password| password.is_valid_sled())
+            .count() as i64)
+    }
+
+    fn part2(&self) -> io::Result<i64> {
+        Ok(load_passwords()?
+            .iter()
+            .filter(|password| password.is_valid_toboggan())
+            .count() as i64)
+    }
 }
 
 #[derive(Debug)]

@@ -3,12 +3,22 @@ use std::io;
 use std::io::Read;
 use std::str::Lines;
 
-pub fn part1() -> io::Result<usize> {
-    part_impl(customs_declaration_form_anyone)
-}
+use crate::solution::ProblemSolution;
 
-pub fn part2() -> io::Result<usize> {
-    part_impl(customs_declaration_form_everyone)
+pub struct Solution {}
+
+impl ProblemSolution for Solution {
+    fn name(&self) -> &'static str {
+        "problem_06"
+    }
+
+    fn part1(&self) -> io::Result<i64> {
+        Ok(part_impl(customs_declaration_form_anyone)? as i64)
+    }
+
+    fn part2(&self) -> io::Result<i64> {
+        Ok(part_impl(customs_declaration_form_everyone)? as i64)
+    }
 }
 
 fn part_impl<F>(customs_form: F) -> io::Result<usize>

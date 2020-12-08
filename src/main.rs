@@ -1,48 +1,54 @@
+use std::collections::BTreeMap;
+use std::env;
+
 pub mod problem_01;
 pub mod problem_02;
 pub mod problem_03;
 pub mod problem_04;
 pub mod problem_05;
 pub mod problem_06;
+pub mod solution;
 
+use solution::ProblemSolution;
 use std::io;
 
 fn main() -> io::Result<()> {
-    let p11 = problem_01::part1()?;
-    println!("p11: {}", p11);
+    let args = env::args().collect::<Vec<String>>();
 
-    let p12 = problem_01::part2()?;
-    println!("p12: {}", p12);
+    let mode;
+    if args.len() < 2 {
+        mode = "all";
+    } else {
+        mode = args[1].as_str();
+    }
 
-    let p21 = problem_02::part1()?;
-    println!("p21: {}", p21);
+    exec_problem(mode)
+}
 
-    let p22 = problem_02::part2()?;
-    println!("p22: {}", p22);
+fn exec_problem(s: &str) -> io::Result<()> {
+    let mut map: BTreeMap<&str, &dyn ProblemSolution> = BTreeMap::new();
 
-    let p31 = problem_03::part1()?;
-    println!("p31: {}", p31);
+    map.insert("p1", &problem_01::Solution {});
+    map.insert("p2", &problem_02::Solution {});
+    map.insert("p3", &problem_03::Solution {});
+    map.insert("p4", &problem_04::Solution {});
+    map.insert("p5", &problem_05::Solution {});
+    map.insert("p6", &problem_06::Solution {});
 
-    let p32 = problem_03::part2()?;
-    println!("p32: {}", p32);
-
-    let p41 = problem_04::part1()?;
-    println!("p41: {}", p41);
-
-    let p42 = problem_04::part2()?;
-    println!("p42: {}", p42);
-
-    let p51 = problem_05::part1()?;
-    println!("p51: {}", p51);
-
-    let p52 = problem_05::part2()?;
-    println!("p52: {}", p52);
-
-    let p61 = problem_06::part1()?;
-    println!("p61: {}", p61);
-
-    let p62 = problem_06::part2()?;
-    println!("p62: {}", p62);
+    if s == "all" {
+        for (_, solution) in map.into_iter() {
+            solution.exec()?;
+        }
+    } else {
+        map.get(s)
+            .ok_or_else(|| {
+                io::Error::new(
+                    io::ErrorKind::InvalidInput,
+                    format!("no such solution: {}", s),
+                )
+            })?
+            .exec()?;
+    }
 
     Ok(())
 }

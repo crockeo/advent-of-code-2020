@@ -7,12 +7,22 @@ use std::io::Result;
 use std::iter::FromIterator;
 use std::path::Path;
 
-pub fn part1() -> io::Result<u32> {
-    part_impl(2)
-}
+use crate::solution::ProblemSolution;
 
-pub fn part2() -> io::Result<u32> {
-    part_impl(3)
+pub struct Solution {}
+
+impl ProblemSolution for Solution {
+    fn name(&self) -> &'static str {
+        "problem_01"
+    }
+
+    fn part1(&self) -> io::Result<i64> {
+        Ok(part_impl(2)? as i64)
+    }
+
+    fn part2(&self) -> io::Result<i64> {
+        Ok(part_impl(3)? as i64)
+    }
 }
 
 fn part_impl(term_count: usize) -> io::Result<u32> {

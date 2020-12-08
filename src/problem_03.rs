@@ -3,23 +3,33 @@ use std::io;
 use std::io::Read;
 use std::path::Path;
 
-pub fn part1() -> io::Result<u64> {
-    let mut file = File::open(Path::new(".").join("data").join("03.txt").as_path())?;
-    let tree_map = TreeMap::new(&mut file)?;
+use crate::solution::ProblemSolution;
 
-    Ok(tree_map.hits(3, 1))
-}
+pub struct Solution {}
 
-pub fn part2() -> io::Result<u64> {
-    let mut file = File::open(Path::new(".").join("data").join("03.txt").as_path())?;
-    let tree_map = TreeMap::new(&mut file)?;
+impl ProblemSolution for Solution {
+    fn name(&self) -> &'static str {
+        return "problem_03";
+    }
 
-    let slopes = vec![(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)];
+    fn part1(&self) -> io::Result<i64> {
+        let mut file = File::open(Path::new(".").join("data").join("03.txt").as_path())?;
+        let tree_map = TreeMap::new(&mut file)?;
 
-    Ok(slopes
-        .iter()
-        .map(|(dx, dy)| tree_map.hits(*dx, *dy))
-        .product())
+        Ok(tree_map.hits(3, 1) as i64)
+    }
+
+    fn part2(&self) -> io::Result<i64> {
+        let mut file = File::open(Path::new(".").join("data").join("03.txt").as_path())?;
+        let tree_map = TreeMap::new(&mut file)?;
+
+        let slopes = vec![(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)];
+
+        Ok(slopes
+            .iter()
+            .map(|(dx, dy)| tree_map.hits(*dx, *dy) as i64)
+            .product())
+    }
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]

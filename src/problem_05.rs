@@ -3,33 +3,44 @@ use std::io;
 use std::io::prelude::*;
 use std::io::BufReader;
 
-pub fn part1() -> io::Result<i32> {
-    BufReader::new(File::open("./data/05.txt")?)
-        .lines()
-        .flat_map(|locator| find_seat(128, 8, locator.unwrap().as_str()))
-        .map(|(row, col)| seat_id(row, col))
-        .max()
-        .ok_or_else(|| io::Error::new(io::ErrorKind::InvalidData, "invalid locator"))
-}
+use crate::solution::ProblemSolution;
 
-pub fn part2() -> io::Result<i32> {
-    let mut sorted_seat_ids = BufReader::new(File::open("./data/05.txt")?)
-        .lines()
-        .flat_map(|locator| find_seat(128, 8, locator.unwrap().as_str()))
-        .map(|(row, col)| seat_id(row, col))
-        .collect::<Vec<i32>>();
-    sorted_seat_ids.sort_unstable();
+pub struct Solution {}
 
-    let mut it = sorted_seat_ids.iter();
-    it.next();
-
-    for (seat_id, next_seat_id) in sorted_seat_ids.iter().zip(it) {
-        if next_seat_id - seat_id == 2 {
-            return Ok(seat_id + 1);
-        }
+impl ProblemSolution for Solution {
+    fn name(&self) -> &'static str {
+        return "problem_05";
     }
 
-    Ok(0)
+    fn part1(&self) -> io::Result<i64> {
+        BufReader::new(File::open("./data/05.txt")?)
+            .lines()
+            .flat_map(|locator| find_seat(128, 8, locator.unwrap().as_str()))
+            .map(|(row, col)| seat_id(row, col))
+            .max()
+            .map(|x| x as i64) // shameful hack
+            .ok_or_else(|| io::Error::new(io::ErrorKind::InvalidData, "invalid locator"))
+    }
+
+    fn part2(&self) -> io::Result<i64> {
+        let mut sorted_seat_ids = BufReader::new(File::open("./data/05.txt")?)
+            .lines()
+            .flat_map(|locator| find_seat(128, 8, locator.unwrap().as_str()))
+            .map(|(row, col)| seat_id(row, col))
+            .collect::<Vec<i32>>();
+        sorted_seat_ids.sort_unstable();
+
+        let mut it = sorted_seat_ids.iter();
+        it.next();
+
+        for (seat_id, next_seat_id) in sorted_seat_ids.iter().zip(it) {
+            if next_seat_id - seat_id == 2 {
+                return Ok((seat_id + 1) as i64);
+            }
+        }
+
+        Ok(0)
+    }
 }
 
 fn seat_id(row: i32, col: i32) -> i32 {

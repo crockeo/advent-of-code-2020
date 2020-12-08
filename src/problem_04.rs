@@ -7,26 +7,36 @@ use std::str::FromStr;
 use lazy_static::lazy_static;
 use regex::Regex;
 
-pub fn part1() -> io::Result<i32> {
-    let mut file = File::open("./data/04.txt")?;
-    let mut contents = String::new();
-    file.read_to_string(&mut contents)?;
+use crate::solution::ProblemSolution;
 
-    let passports = parse_batch_passports(contents.as_str());
+pub struct Solution {}
 
-    Ok(passports.len() as i32)
-}
+impl ProblemSolution for Solution {
+    fn name(&self) -> &'static str {
+        return "problem_04";
+    }
 
-pub fn part2() -> io::Result<i32> {
-    let mut file = File::open("./data/04.txt")?;
-    let mut contents = String::new();
-    file.read_to_string(&mut contents)?;
+    fn part1(&self) -> io::Result<i64> {
+        let mut file = File::open("./data/04.txt")?;
+        let mut contents = String::new();
+        file.read_to_string(&mut contents)?;
 
-    let passports = parse_batch_passports(contents.as_str());
-    Ok(passports
-        .iter()
-        .filter(|passport| passport.is_valid())
-        .count() as i32)
+        let passports = parse_batch_passports(contents.as_str());
+
+        Ok(passports.len() as i64)
+    }
+
+    fn part2(&self) -> io::Result<i64> {
+        let mut file = File::open("./data/04.txt")?;
+        let mut contents = String::new();
+        file.read_to_string(&mut contents)?;
+
+        let passports = parse_batch_passports(contents.as_str());
+        Ok(passports
+            .iter()
+            .filter(|passport| passport.is_valid())
+            .count() as i64)
+    }
 }
 
 // best-effort parsing, i.e. we just include the ones that are known to be valid... for now
